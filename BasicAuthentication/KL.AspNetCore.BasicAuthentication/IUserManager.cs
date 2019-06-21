@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace KL.AspNetCore.BasicAuthentication
@@ -13,7 +12,8 @@ namespace KL.AspNetCore.BasicAuthentication
         /// Get list of keys associated with an user
         /// </summary>
         /// <param name="userId">user Id</param>
+        /// <param name="pass">pass</param>
         /// <returns>(keys, claims)</returns>
-        Task<IEnumerable<KeyValuePair<string, string>>> Authenticate(string userId, string pass);
+        Task<IEnumerable<KeyValuePair<string, string>>> AuthenticateAsync(string userId, string pass);
     }
 }

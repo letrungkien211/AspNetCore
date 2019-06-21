@@ -50,7 +50,7 @@ namespace KL.AspNetCore.BasicAuthentication
                     return AuthenticateResult.NoResult();
                 }
 
-                var userAuthInfo = await UserManager.Authenticate(name, pass);
+                var userAuthInfo = await UserManager.AuthenticateAsync(name, pass);
                 if (userAuthInfo == null)
                     return AuthenticateResult.Fail($"Name={name} is not found.");
 

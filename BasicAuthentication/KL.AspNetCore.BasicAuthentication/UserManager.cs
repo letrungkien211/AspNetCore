@@ -29,7 +29,7 @@ namespace KL.AspNetCore.BasicAuthentication
         /// <param name="userId"></param>
         /// <param name="pass"></param>
         /// <returns></returns>
-        public Task<IEnumerable<KeyValuePair<string, string>>> Authenticate(string userId, string pass)
+        public Task<IEnumerable<KeyValuePair<string, string>>> AuthenticateAsync(string userId, string pass)
         {
             if (!Users.TryGetValue(userId, out var userItem))
             {
