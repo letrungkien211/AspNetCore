@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+
 
 namespace KL.AspNetCore.BasicAuthentication
 {
@@ -29,11 +31,11 @@ namespace KL.AspNetCore.BasicAuthentication
         /// <param name="userId"></param>
         /// <param name="pass"></param>
         /// <returns></returns>
-        public Task<IEnumerable<KeyValuePair<string, string>>> AuthenticateAsync(string userId, string pass)
+        public async Task<IEnumerable<KeyValuePair<string, string>>> AuthenticateAsync(string userId, string pass)
         {
             if (!Users.TryGetValue(userId, out var userItem))
             {
-                return Task.FromResult<IEnumerable<KeyValuePair<string, string>>>(null);
+                return null;
             }
 
             foreach (var key in userItem.Keys)
@@ -45,10 +47,16 @@ namespace KL.AspNetCore.BasicAuthentication
                         new  KeyValuePair<string, string>(ClaimTypes.Name, userId)
                     };
 
-                    ret.AddRange(userItem.Scopes.Select(x => new KeyValuePair<string, string>(BasicAuthenticationConstants.Scope, x)));
-                    ret.AddRange(userItem.Roles.Select(x => new KeyValuePair<string, string>(ClaimTypes.Role, x)));
+                    if (userItem.Scopes != null)
+                    {
+                        ret.AddRange(userItem.Scopes.Select(x => new KeyValuePair<string, string>(BasicAuthenticationConstants.Scope, x)));
+                    }
+                    if (userItem.Roles != null)
+                    {
+                        ret.AddRange(userItem.Roles.Select(x => new KeyValuePair<string, string>(ClaimTypes.Role, x)));
+                    }
 
-                    return Task.FromResult<IEnumerable<KeyValuePair<string, string>>>(ret);
+                    return ret;
                 }
             }
             return null;
